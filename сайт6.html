@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS 1.6 Skins - Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text-color: #eeeeee;
+            --accent-color: #ff9d00;
+            --border-color: #333;
+            --meta-color: #888;
+        }
+
+        [data-theme="blue"] {
+            --bg-color: #050b18;
+            --card-bg: #111b2d;
+            --text-color: #e2e8f0;
+            --accent-color: #38bdf8;
+            --border-color: #1e293b;
+            --meta-color: #94a3b8;
+        }
+
+        [data-theme="white"] {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --accent-color: #2563eb;
+            --border-color: #cbd5e1;
+            --meta-color: #64748b;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        #searchInput {
+            padding: 12px;
+            width: 300px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .theme-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        /* КОНТЕЙНЕР ПАКОВ */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* КАРТОЧКА ПАКА */
+        .pack-card {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.6);
+        }
+
+        /* ГАЛЕРЕЯ (СЛЕВА) */
+        .gallery-side {
+            flex: 2.5; /* Широкая часть под фото */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: var(--border-color);
+        }
+
+        .main-img {
+            grid-column: span 3;
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+        }
+
+        .sub-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+
+        /* ПАНЕЛЬ ИНФО (СПРАВА) */
+        .info-side {
+            flex: 1; /* Узкая панель справа */
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+        }
+
+        .pack-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 0 0 20px 0;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .meta-group {
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--meta-color);
+        }
+
+        .meta-item b {
+            color: var(--text-color);
+            display: block;
+            font-size: 1.1rem;
+            margin-top: 4px;
+        }
+
+        .rating-box {
+            font-size: 1.2rem;
+            color: #fbbf24;
+            margin-bottom: 30px;
+            background: rgba(251, 191, 36, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: var(--accent-color);
+            color: #000;
+            text-align: center;
+            padding: 18px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            margin-top: auto; /* Прижимает кнопку к низу */
+        }
+
+        .download-btn:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* Для мобильных устройств */
+        @media (max-width: 900px) {
+            .pack-card { flex-direction: column; }
+            .info-side { border-left: none; border-top: 1px solid var(--border-color); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CS 1.6 SKINS</h1>
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Поиск пака..." onkeyup="search()">
+        <button class="theme-btn" onclick="setTheme('white')" style="background:#fff; color:#000">Белый</button>
+        <button class="theme-btn" onclick="setTheme('blue')" style="background:#1e40af; color:#fff">Синий</button>
+        <button class="theme-btn" onclick="setTheme('black')" style="background:#333; color:#fff">Черный</button>
+    </div>
+</header>
+
+<div class="content-wrapper" id="mainList">
+
+    <div class="pack-card">
+        <div class="gallery-side">
+            <img src="https://via.placeholder.com/800x450/222/fff?text=MAIN+IMAGE" class="main-img" alt="Main">
+            <img src="https://via.placeholder.com/300x140/333/ccc?text=1" class="sub-img">
+            <img src="https://via.placeholder.com/300x140/333/ccc?text=2" class="sub-img">
+            <img src="https://via.placeholder.com/300x140/333/ccc?text=3" class="sub-img">
+            <img src="https://via.placeholder.com/300x140/444/ccc?text=4" class="sub-img">
+            <img src="https://via.placeholder.com/300x140/444/ccc?text=5" class="sub-img">
+            <img src="https://via.placeholder.com/300x140/444/ccc?text=6" class="sub-img">
+        </div>
+
+        <div class="info-side">
+            <h2 class="pack-title">Asiimov Pack v2.0</h2>
+            
+            <div class="meta-group">
+                <div class="meta-item">Автор: <b>Username</b></div>
+                <div class="meta-item">Дата: <b>17.02.2024</b></div>
+                <div class="meta-item">Размер: <b>15.4 MB</b></div>
+            </div>
+
+            <div class="rating-box">
+                Оценка: ⭐⭐⭐⭐⭐ 5/5
+            </div>
+
+            <a href="#" class="download-btn">Скачать сейчас</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function setTheme(t) { document.documentElement.setAttribute('data-theme', t); }
+
+    function search() {
+        let filter = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.getElementsByClassName('pack-card');
+        for (let card of cards) {
+            let title = card.querySelector('.pack-title').innerText.toLowerCase();
+            card.style.display = title.includes(filter) ? "flex" : "none";
+        }
+    }
+</script>
+
+</body>
+</html>
